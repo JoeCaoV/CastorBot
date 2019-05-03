@@ -1,0 +1,42 @@
+header{
+	border-bottom: black 2px solid;
+	margin-bottom: 15px;
+}
+
+body{
+    margin:0px;
+}
+
+form{
+	margin-bottom: 25px;
+}
+
+#footer{
+	background-color:green;
+	text-align:right;
+	font-weight:bold;
+	font-size:20px;
+	box-shadow: inset 1px 1px 5px #000;
+	margin-top: 25px;
+}
+
+.container-fluid{
+	padding:0;
+}
+
+#map, #photo, #story, #intro{
+	display: none;
+}
+
+#map{
+	text-align: center;
+	margin-bottom: 15px;
+}
+
+#intro{
+	margin-top: 15px;
+}
+
+#question{
+	width:400px;
+}

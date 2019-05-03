@@ -1,0 +1,4 @@
+env/
+papybot/__pycache__/
+papybot/classes/__pycache__/
+papybot/tests/__pycache__/

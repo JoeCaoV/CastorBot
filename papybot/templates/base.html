@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html>
+  <head>
+	{% block head %}
+		<title>CastorBot</title>
+		<meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+		<meta charset="utf-8">
+		<script src="https://ajax.googleapis.com/ajax/libs/jquery/1.7.2/jquery.min.js"></script>
+		<script src="{{ url_for('static', filename='js/form.js') }}"></script>
+	    </script>
+
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/bootstrap.min.css')}}">
+		<link rel="stylesheet" href="{{ url_for('static', filename='css/main.css')}}">
+		<link rel="icon" href="{{ url_for('static', filename='img/icon.png')}}">
+	{% endblock %}
+  </head>
+  <header>
+	{% block header %}
+	<div class='row'>
+		<div class='col-sm-3 d-none d-lg-block'>
+				<img alt="CastorBot" title="CastorBot" src="{{ url_for('static', filename='img/castor.png')}}">
+		</div>
+		<div class='col-xs-12 col-lg-4 text-center align-self-center offset-lg4-1'>
+			<h1>CastorBot</h1>
+			<h2>Raconte-moi une histoire</h2>
+		</div>
+	</div>
+	{% endblock %}
+  </header>
+  <body>
+	{% block body %}
+
+    {% endblock %}
+  </body>
+  <footer>
+    {% block footer %}
+        <div class='container-fluid'>
+            <p id="footer">Réalisé par Cao-Van Joevin. </p>
+        </div>
+    {% endblock %}
+  </footer>
+</html>

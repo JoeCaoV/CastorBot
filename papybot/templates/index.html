@@ -1,0 +1,37 @@
+{% extends 'base.html' %}
+
+{% block body %}
+	<div class="container">
+		<h5>Bonjour mon enfant, comment puis-je t'aider ?</h5>
+		<p>Pose moi ta question :</p>
+		<form>
+			<input type='text' name='question' id='question' />
+			<input type='submit'>
+		</form>
+		<div class='row'>
+			<div id='map' class="col-lg-6 col-xs-12">
+				<img id="google_map" src=''/>
+			</div>
+			<div id='story' class='col-lg-6 col-xs-12'>
+				<div class='row'>
+					<div class='col-lg-6 col-xs-12'>
+						<h6>Voici l'adresse :</h6>
+					</div>
+					<div class='col-lg-6 col-xs-12'>
+						<p id='address'></p>
+					</div>
+			    	<div id='intro' class='col-xs-12 col-lg-12'>
+			    		<h6>Laisse moi te raconter...</h6>
+			    	</div>
+			    	<div class='col-lg-12 col-xs-12'>
+			    		<p id='text'></p>
+			    		<p>
+			    			<a id='link' href=''>[En savoir plus sur Wikipédia]</a>
+			    		</p>
+			    	</div>
+			    </div>
+			</div>
+		</div>
+	</div>
+
+{% endblock %}
