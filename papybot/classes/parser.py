@@ -1,4 +1,5 @@
 """The STOPWORDS from CONFIG is a list of unwanted words"""
+import re
 from papybot.config import STOPWORDS
 
 class Parser():
@@ -59,9 +60,5 @@ class Parser():
         unwanted titles like " == Title == " so this method
         erase them and return the new string
         """
-        result = ''
-        sentences = string.split("== ")
-        for count, sentence in enumerate(sentences):
-            if count%2 == 0:
-                result += sentence
-        return result
+        sentence = re.sub("={2}\s.*\s={2}\s", "", string)
+        return sentence

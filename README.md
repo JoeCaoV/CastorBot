@@ -4,7 +4,7 @@ This application is a website locally hosted using Flask, containing a single pa
 
 On this page, you will find a form, where you can ask an address of anything to Castor Bot.
 
-CastorBot will then tell you the address of what you want, display a map and tell a story about the place.
+CastorBot will then tell you the address of what you want, display a map and tell a story about the place, if he can...
 
 ## HOW TO USE IT : 
 

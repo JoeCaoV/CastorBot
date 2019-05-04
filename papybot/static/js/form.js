@@ -13,11 +13,18 @@ $(document).ready(function() {
 				$('#story').show().text(data.error);
 				$('#map, #intro').hide();
 			}else{
-			    $('#text').text(data.story);
 			    $('#google_map').attr('src', data.map);
 			    $('#address').text(data.address);
+			    $('#text').text(data.story);
 			    $('#link').attr('href', data.url);
 			    $('#story, #map, #intro').show();
+			    if(data.url){
+			    	$('#text').text(data.story);
+			        $('#link').attr('href', data.url).text('[En savoir plus sur Wikipédia]');
+			    }else{
+			    	$('#text').text('Enfaite je ne sais plus ce que je voulais dire... Je suis si vieux...')
+			    	$('#link').text('')
+			    }
 		    }
 		});
 	});
