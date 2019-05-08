@@ -1,6 +1,7 @@
 """Requests module for Google Map Api and
 Wikipedia module for Wiki Media API
 """
+import json
 import requests
 
 class GmApi():
@@ -42,7 +43,7 @@ class GmApi():
         """
         params = {"key" : self.key, "address" : place, "language" : 'fr',
                   "region" : "fr"}
-        api_get = requests.get(self.url_search, params=params).json()
+        api_get = json.loads(requests.get(self.url_search, params=params))
         if api_get['status'] == 'OK':
             result = {"place_id" : api_get['results'][0]['place_id']}
             return result

@@ -1,15 +1,25 @@
 """Importing unittest and class Parser to test the parser
 """
+import json
 import unittest
+from unittest.mock import patch
+
+import wikipedia
 
 from papybot.classes.parser import Parser
+from papybot.classes.google_api import GmApi
+from papybot.classes.wiki_api import WikiApi
 
-class test_parser_api(unittest.TestCase):
+
+class TestParserApi(unittest.TestCase):
     """Class containing variable test to check if the parser is OK"""
+
+    def setUp(self):
+        """setting Parser class"""
+        self.parser = Parser()
 
     def test_empty_string(self):
         """Method to test the parser result on a empty string"""
-        self.parser = Parser()
         response = ''
         string = ''
         self.assertEqual(self.parser.parse_sentence(string), response)
@@ -18,54 +28,109 @@ class test_parser_api(unittest.TestCase):
         """Method to test the parser result on a string containing
         only words under 3 characters length
         """
-        self.parser = Parser()
         response = ''
         string = 'Je te lu un BD'
         self.assertEqual(self.parser.parse_sentence(string), response)
 
     def test_apostrophe(self):
         """Method to test if the parser get rid of apostrophe"""
-        self.parser = Parser()
         response = 'Donne adresse Openclassrooms'
         string = "Donne moi l'adresse d'Openclassrooms"
         self.assertEqual(self.parser.parse_sentence(string), response)
 
     def test_simple_string(self):
         """Method to test a basic string"""
-        self.parser = Parser()
         response = 'trouver magasin jouet Paris'
         string = "Où puis je trouver un magasin de jouet à Paris ?"
         self.assertEqual(self.parser.parse_sentence(string), response)
 
     def test_long_string(self):
         """Method to test a string too long (above 100 characters)"""
-        self.parser = Parser()
         response = ''
         string = "Je cherche un restaurant végétarien sans gluten pas cher et " \
                  "ouvert jusqu'à 1H du matin avec des séances de Yoga en digestif"
         self.assertEqual(self.parser.parse_sentence(string), response)
 
-class test_parser_text(unittest.TestCase):
-    """Class containing variable test to check if the parser is OK"""
+class TestParserName(unittest.TestCase):
+    """Class containing the tests for the parser removing the "==" """
+
+    def setUp(self):
+        """setting Parser class"""
+        self.parser = Parser()
 
     def test_empty_string(self):
         """Test if the string is empty"""
-        self.parser = Parser()
         response = ''
         self.assertEqual(self.parser.remove_titles(response), response)
 
     def test_no_match_string(self):
         """Testing if the string stay unchanged if there is nothing to remove"""
-        self.parser = Parser()
         response = 'Unchanged string cause there is no double ='
         self.assertEqual(self.parser.remove_titles(response), response)
 
     def test_matching_string(self):
         """Testing if the string correctly remove the unwanted "== " """
-        self.parser = Parser()
         response = 'Text. Text again'
         string = 'Text. == title == Text again'
         self.assertEqual(self.parser.remove_titles(string), response)
-        
+
+class TestApiRequests(unittest.TestCase):
+    """Class containing the tests for the Api requests"""
+    def setUp(self):
+        """Setting the Api Classes"""
+        self.api_gm = GmApi('key')
+        self.wiki_api = WikiApi()
+
+    @patch('papybot.classes.google_api.requests.get')
+    def test_http_return(self, mock_api):
+        """Trying a wanted result"""
+        result = {
+            "results" :[
+                {
+                    'place_id' : "ChIJIZX8lhRu5kcRGwYk8Ce3Vc8"
+                }
+            ],
+            "status" : "OK"
+        }
+
+        mock_api.return_value = json.dumps(result)
+        self.assertEqual(self.api_gm.request_search('String'),
+                         {"place_id" : result['results'][0]['place_id']})
+
+    @patch('papybot.classes.google_api.requests.get')
+    def test_error_return(self, mock_api):
+        """Trying an unwanted result"""
+        result = {
+            "results" : [],
+            "status" : "NOT OK"
+        }
+
+        mock_api.return_value = json.dumps(result)
+        self.assertEqual(self.api_gm.request_search('string'), False)
+
+    @patch('wikipedia.search', return_value="title")
+    @patch('wikipedia.page')
+    @patch('wikipedia.summary', return_value="summary")
+    def test_good_request(self, mock_summary, mock_page, mock_search):
+        """Trying a wanted result"""
+        class Page:
+            """creating a objet Page to return for wikipidia page mock"""
+            def __init__(self):
+                self.url = 'url'
+        mock_page.return_value = Page()
+        self.assertEqual(self.wiki_api.get_data('mock'), {"text" : "summary", "url" : "url"})
+
+    @patch('wikipedia.search', side_effect=wikipedia.exceptions.DisambiguationError('', ''))
+    @patch('wikipedia.page')
+    @patch('wikipedia.summary', return_value="summary")
+    def test_wrong_request(self, mock_summary, mock_page, mock_search):
+        """Trying to raise an Exception"""
+        class Page:
+            """creating a objet Page to return for wikipidia page mock"""
+            def __init__(self):
+                self.url = 'url'
+        mock_page.return_value = Page()
+        self.assertEqual(self.wiki_api.get_data('mock'), {"text" : "", "url" : False})
+
 if __name__ == "__main__":
     unittest.main()
