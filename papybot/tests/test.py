@@ -90,23 +90,18 @@ class TestApiRequests(unittest.TestCase):
                     'place_id' : "ChIJIZX8lhRu5kcRGwYk8Ce3Vc8"
                 }
             ],
-            "status" : "OK"
         }
-
-        mock_api.return_value = json.dumps(result)
-        self.assertEqual(self.api_gm.request_search('String'),
-                         {"place_id" : result['results'][0]['place_id']})
+        mock_api.return_value.status_code = 200
+        mock_api.return_value.json.return_value = result
+        response = self.api_gm.request_search('String')
+        self.assertEqual(response, {'place_id' : "ChIJIZX8lhRu5kcRGwYk8Ce3Vc8"})
 
     @patch('papybot.classes.google_api.requests.get')
     def test_error_return(self, mock_api):
         """Trying an unwanted result"""
-        result = {
-            "results" : [],
-            "status" : "NOT OK"
-        }
-
-        mock_api.return_value = json.dumps(result)
-        self.assertEqual(self.api_gm.request_search('string'), False)
+        mock_api.return_value.status_code = 403
+        response = self.api_gm.request_search('String')
+        self.assertEqual(response, False)
 
     @patch('wikipedia.search', return_value="title")
     @patch('wikipedia.page')
