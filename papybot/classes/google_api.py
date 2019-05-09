@@ -1,9 +1,7 @@
 """Requests module for Google Map Api and
 Wikipedia module for Wiki Media API
 """
-import json
 import requests
-import urllib
 
 class GmApi():
     """Class for the differents Google Maps Api"""

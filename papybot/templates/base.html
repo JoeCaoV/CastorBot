@@ -34,8 +34,20 @@
   </body>
   <footer>
     {% block footer %}
-        <div class='container-fluid'>
-            <p id="footer">Réalisé par Cao-Van Joevin. </p>
+        <div id='footer'class='container-fluid'>
+        	<ul>
+        		<li>Réalisé par Cao-Van Joevin.</li>
+        		<li>
+        			<a href='https://github.com/JoeCaoV/CastorBot'>
+        			    <img alt='Github' title='Github' src="{{ url_for('static', filename='img/github.png')}}">
+        			</a>
+        		</li>
+        		<li>
+        			<a href='https://www.linkedin.com/in/joevin-cao-van-b6462b155/'>
+        				<img alt='LinkedIn' title='LinkedIn' src="{{ url_for('static', filename='img/linkedin.png')}}">
+        			</a>
+        		</li>
+        	</ul>
         </div>
     {% endblock %}
   </footer>
