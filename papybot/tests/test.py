@@ -90,6 +90,7 @@ class TestApiRequests(unittest.TestCase):
                     'place_id' : "ChIJIZX8lhRu5kcRGwYk8Ce3Vc8"
                 }
             ],
+            "status" : 'OK'
         }
         mock_api.return_value.status_code = 200
         mock_api.return_value.json.return_value = result
