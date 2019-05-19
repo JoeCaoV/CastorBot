@@ -11,7 +11,7 @@ $(document).ready(function() {
 		.done(function(data) {
 			if(data.error){
 				$('#error').show().text(data.error);
-				$('#map, #intro').hide();
+				$('#map, #intro, #story').hide();
 			}else{
 				$('#error').hide()
 			    $('#google_map').attr('src', data.map);
