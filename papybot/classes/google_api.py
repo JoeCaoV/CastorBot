@@ -43,6 +43,6 @@ class GmApi():
         params = {"key" : self.key, "address" : place, "language" : 'fr',
                   "region" : "fr"}
         api_get = requests.get(self.url_search, params=params)
-        if api_get.status_code == 200:
+        if api_get.json()['status'] == 'OK':
             return {'place_id' : api_get.json()['results'][0]['place_id']}
         return False
