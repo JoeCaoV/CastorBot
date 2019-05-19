@@ -10,9 +10,10 @@ $(document).ready(function() {
 		})
 		.done(function(data) {
 			if(data.error){
-				$('#story').show().text(data.error);
+				$('#error').show().text(data.error);
 				$('#map, #intro').hide();
 			}else{
+				$('#error').hide()
 			    $('#google_map').attr('src', data.map);
 			    $('#address').text(data.address);
 			    $('#text').text(data.story);
