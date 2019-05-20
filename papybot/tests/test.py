@@ -104,6 +104,43 @@ class TestApiRequests(unittest.TestCase):
         response = self.api_gm.request_search('String')
         self.assertEqual(response, False)
 
+    @patch('papybot.classes.google_api.requests.get')
+    def test_bad_details_requestt(self, mock_api):
+        """Trying a bad Api details request result"""
+        result = {
+            "results" :[
+                {
+                    'Nothing' : "The wanted element doesn't exist"
+                }
+            ],
+            "status" : 'OK'
+        }
+        mock_api.return_value.json.return_value = result
+        response = self.api_gm.request_details('String')
+        self.assertFalse(response)
+
+    @patch('papybot.classes.google_api.requests.get')
+    def test_bad_details_requestt(self, mock_api):
+        """Trying a good Api details request result"""
+        result = {
+            "result" :
+                {
+                    'formatted_address' : "66 Rue Rivole, Paris France",
+                    'address_components' : [
+                        {
+                            "long_name": "Cité Paradis",
+                            "short_name": "Cité Paradis",
+                            "types": ["route"]
+                        }
+                    ],
+                    'name' : 'Openclassrooms',
+                },
+            "status" : 'OK'
+        }
+        mock_api.return_value.json.return_value = result
+        response = self.api_gm.request_details('String')
+        self.assertEqual(response, {'address' : '66 Rue Rivole, Paris France', 'route' : 'Cité Paradis'})
+
     @patch('wikipedia.search', return_value="title")
     @patch('wikipedia.page')
     @patch('wikipedia.summary', return_value="summary")

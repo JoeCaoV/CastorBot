@@ -20,21 +20,29 @@ def process():
     parser = Parser()
     question = request.form['question']
     #check if empty
-    if question:
-        string = parser.parse_sentence(question)
-        #check if parsed string is empty
-        if string:
-            api_gm, api_wiki = GmApi(GM_API_KEY), WikiApi()
-            search = api_gm.request_search(string)
-            #check if google map found something
-            if search:
-                details = api_gm.request_details(search['place_id'])
-                google_map = api_gm.request_map(details['address'], 15, "400x400")
-                wiki_data = api_wiki.get_data(details['route'])
-                story = parser.remove_titles(wiki_data['text'])
+    if not question:
+        return jsonify({'error' : "Tu n'as rien demandé..."})
+    string = parser.parse_sentence(question)
+    #check if parsed string is empty
+    if not string:
+        return jsonify({'error' : "Je n'ai pas compris ta question."})
 
-                return jsonify({'map' : google_map.url, 'story' : story,
-                                'address' : details['address'], 'url' : wiki_data['url']})
+    api_gm, api_wiki = GmApi(GM_API_KEY), WikiApi()
+    search = api_gm.request_search(string)
+    #check if google map found something
+    if not search:
+        return jsonify({'error' : "J'ai compris la question," /
+                        "mais je ne connais pas la réponse."})
+    details = api_gm.request_details(search['place_id'])
+    if not details:
+        return jsonify({'error' : "Je connais cet endroit, mais " /
+                        "je ne sais plus où c'est."})
+    google_map = api_gm.request_map(details['address'], 15, "400x400")
+    wiki_data = api_wiki.get_data(details['route'])
+    story = parser.remove_titles(wiki_data['text'])
 
-        return jsonify({'error' : "Je n'ai pas compris ta question"})
-    return jsonify({'error' : "Tu n'as rien demandé..."})
+    return jsonify({'map' : google_map.url, 'story' : story,
+                    'address' : details['address'], 'url' : wiki_data['url']})
+
+        
+    

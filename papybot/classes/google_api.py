@@ -20,13 +20,17 @@ class GmApi():
         """
         params = {"key" : self.key, "placeid" : place_id}
         api_get = requests.get(self.url_details, params=params).json()
-        address = api_get['result']['formatted_address']
-        routes = api_get['result']['address_components']
-        for route in routes:
-            if route['types'][0] == 'route':
-                route_name = route['long_name']
-                break
-        return {'address' : address, 'route' : route_name}
+        try:
+            address = api_get['result']['formatted_address']
+            routes = api_get['result']['address_components']
+            route_name = api_get['result']['name']
+            for route in routes:
+                if route['types'][0] == 'route':
+                    route_name = route['long_name']
+                    break
+            return {'address' : address, 'route' : route_name}
+        except:
+            return False
 
     def request_map(self, center, zoom, size):
         """GET the Static Google Map Img from the API"""

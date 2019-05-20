@@ -1,6 +1,7 @@
 $(document).ready(function() {
 	$('form').on('submit', function(event) {
 		event.preventDefault();
+		$('.spinner-border').css('display', 'inline-block')
 		$.ajax({
 			data : {
 				question: $('#question').val()
@@ -9,6 +10,7 @@ $(document).ready(function() {
 			url : '/process'
 		})
 		.done(function(data) {
+			$('.spinner-border').hide()
 			if(data.error){
 				$('#error').show().text(data.error);
 				$('#map, #intro, #story').hide();
@@ -27,6 +29,8 @@ $(document).ready(function() {
 			    	$('#link').text('')
 			    }
 		    }
+		    $('#list').show()
+		    $('#previous').prepend('<li>' + $('#question').val() + '</li>')
 		});
 	});
 });

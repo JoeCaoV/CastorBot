@@ -7,6 +7,9 @@
 		<form>
 			<input type='text' name='question' id='question' />
 			<input type='submit'>
+			<div class="spinner-border spinner-border-sm" role="status">
+				<span class="sr-only">Recherche...</span>
+			</div>
 		</form>
 		<div class='row'>
 			<div id='map' class="col-lg-6 col-xs-12">
@@ -32,6 +35,10 @@
 			    </div>
 			</div>
 			<p id='error' class='col-lg-6 col-xs-12'></p>
+		</div>
+		<div class="row">
+			<p id='list' class='col-xs-12 col-lg-12'>Précédentes recherches :</br></p>
+			<ul id="previous"></ul>
 		</div>
 	</div>
 
