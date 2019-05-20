@@ -31,11 +31,11 @@ def process():
     search = api_gm.request_search(string)
     #check if google map found something
     if not search:
-        return jsonify({'error' : "J'ai compris la question," /
-                        "mais je ne connais pas la réponse."})
+        return jsonify({'error' : "J'ai compris la question," +
+                        " mais je ne connais pas la réponse."})
     details = api_gm.request_details(search['place_id'])
     if not details:
-        return jsonify({'error' : "Je connais cet endroit, mais " /
+        return jsonify({'error' : "Je connais cet endroit, mais " +
                         "je ne sais plus où c'est."})
     google_map = api_gm.request_map(details['address'], 15, "400x400")
     wiki_data = api_wiki.get_data(details['route'])

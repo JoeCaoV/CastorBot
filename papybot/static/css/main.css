@@ -56,3 +56,7 @@ form{
 .spinner-border{
 	display:none
 }
+
+#list{
+	display:none;
+}
