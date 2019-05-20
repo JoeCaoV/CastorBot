@@ -31,8 +31,7 @@ def process():
     search = api_gm.request_search(string)
     #check if google map found something
     if not search:
-        return jsonify({'error' : "J'ai compris la question," +
-                        " mais je ne connais pas la réponse."})
+        return jsonify({'error' : "Ca me dit rien, de quoi parle-tu ?"})
     details = api_gm.request_details(search['place_id'])
     if not details:
         return jsonify({'error' : "Je connais cet endroit, mais " +
